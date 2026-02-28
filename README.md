@@ -1,6 +1,14 @@
-# 🎓 UniAdmin AI - Intelligent University Administrative Assistant
+# UniAdmin AI 🎓
 
-A production-ready Next.js full-stack application that provides AI-powered administrative assistance for university services using RAG (Retrieval-Augmented Generation) technology.
+**Assistant Administratif Intelligent pour l'Université**
+
+UniAdmin AI est une application web full-stack moderne qui automatise et simplifie les processus administratifs universitaires grâce à l'intelligence artificielle. L'application utilise un pipeline RAG (Retrieval-Augmented Generation) pour fournir des réponses intelligentes basées sur les documents officiels de l'université.
+
+![Next.js](https://img.shields.io/badge/Next.js-14-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue)
+![Prisma](https://img.shields.io/badge/Prisma-5.0-2D3748)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-06B6D4)
 
 ## 📋 Overview
 

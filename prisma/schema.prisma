@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  STUDENT
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+}
+
+enum DocumentCategory {
+  INSCRIPTION
+  ATTESTATION
+  BOURSES
+  STAGES
+  ABSENCES
+  RATTRAPAGE
+  PAIEMENT
+  CALENDRIER
+  REGLEMENT
+  AUTRES
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(STUDENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  messages   Message[]
+  uploadedDocuments Document[] @relation("DocumentUploader")
+
+  @@map("users")
+}
+
+model Document {
+  id          String           @id @default(cuid())
+  title       String
+  filename    String
+  filepath    String
+  category    DocumentCategory @default(AUTRES)
+  uploadedById String
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  // Relations
+  uploadedBy User @relation("DocumentUploader", fields: [uploadedById], references: [id], onDelete: Cascade)
+  chunks     DocumentChunk[]
+
+  @@map("documents")
+}
+
+model DocumentChunk {
+  id         String @id @default(cuid())
+  documentId String
+  content    String @db.Text
+  pageNumber Int?
+  chunkIndex Int
+  embedding  String? // JSON string of vector embeddings
+  
+  createdAt DateTime @default(now())
+
+  // Relations
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("document_chunks")
+}
+
+model Message {
+  id        String      @id @default(cuid())
+  userId    String
+  role      MessageRole
+  content   String      @db.Text
+  createdAt DateTime    @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+model ChatSession {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("chat_sessions")
+}
